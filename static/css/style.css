@@ -1,12 +1,20 @@
 h1 {
-color: red;
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+}
+
+.form-block {
+    margin-bottom: 20px;
 }
 
 form.login_form {
     margin-left: auto;
     margin-right: auto;
     max-width: 450px;
-    background-color: #ffcc00;
+    background-color: #ffdab9;
     border: 1px solid gray;
     border-radius: 5px;
     padding: 10px;
