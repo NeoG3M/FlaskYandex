@@ -1,9 +1,9 @@
 h1 {
-    text-align: center;
+    text-align: left;
 }
 
 h2 {
-    text-align: center;
+    text-align: left;
 }
 
 .form-block {
@@ -18,4 +18,8 @@ form.login_form {
     border: 1px solid gray;
     border-radius: 5px;
     padding: 10px;
+}
+
+.alert {
+    max-width: 500px;
 }

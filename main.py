@@ -198,5 +198,59 @@ def form_sample():
         return "Форма отправлена"
 
 
+@app.route('/choice/<planet_name>')
+def planet_info(planet_name):
+    url_css = url_for('static', filename='css/style.css')
+    info = []
+    if planet_name.lower() == 'марс':
+        info.append('Эта планета близка к Земле;')
+        info.append('На ней много необходимых ресурсов;')
+        info.append('На ней есть вода и атмосфера;')
+        info.append('На ней есть небольшое магнитное поле;')
+        info.append('Наконец, она просто красива!')
+    elif planet_name.lower() == 'меркурий':
+        info.append('Эта планета находится близко к Солнцу;')
+        info.append('Она богата на металлы и редкоземельные элементы;')
+        info.append('На поверхности можно извлекать тепловую энергию солнца;')
+        info.append('Гравитация планеты ниже Земли, что позволяет сэкономить на топливе;')
+        info.append('На глубине не чувствуются перепады температур.')
+    elif planet_name.lower() == 'венера':
+        info.append('Эта планета находится близко к Земле;')
+        info.append('На ней есть атмосфера, состоящая из плотного углекислого газа;')
+        info.append('По характеристикам она похожа на Землю;')
+        info.append(
+            'Период оборота вокруг оси планеты в 225 дней, что можно использовать для выработки солнечной энергии;')
+        info.append('Из атмосферы можно извлечь воду и углеводы.')
+    return '''<!doctype html>
+                <html lang="ru">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport"
+                          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+                    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+                    <link rel="stylesheet" type="text/css" href="{}">
+                    <title>Document</title>
+                </head>
+                <body>
+                <h1>Моё предложение: {}</h1>
+                <p>{}</p>
+                <div class="alert alert-success" role="alert">
+                {}
+                </div>
+                <div class="alert alert-secondary" role="alert">
+                  {}
+                </div>
+                <div class="alert alert-warning" role="alert">
+                {}
+                </div>
+                <div class="alert alert-danger" role="alert">
+                {}
+                </div>
+                </body>
+                </html>'''.format(url_css, planet_name, *info)
+
+
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')
