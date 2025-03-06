@@ -1,0 +1,13 @@
+{%extends "base.html"%}
+
+{% block content %}
+<main>
+    {% if "инженер" in prof or "строитель" in prof%}
+    <h2>Инженерные симуляторы</h2>
+    <div class="container d-flex justify-content-center"><img src="/static/img/eng.png" alt="здесь нужна картинка, но её нет!"></div>
+    {% else %}
+    <h2>Научные симуляторы</h2>
+    <div class="container d-flex justify-content-center"><img src="/static/img/sci.png" alt="здесь нужна картинка, но её нет!"></div>
+    {% endif %}
+</main>
+{% endblock %}
