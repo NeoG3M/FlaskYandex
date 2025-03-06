@@ -23,3 +23,11 @@ form.login_form {
 .alert {
     max-width: 500px;
 }
+
+h4 {
+color: gray;
+}
+
+.answer p {
+margin-left: 20px;
+}
