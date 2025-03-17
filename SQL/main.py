@@ -9,7 +9,5 @@ def main():
     db_session.global_init('db/mars.db')
     # app.run()
 
-
-
 if __name__ == '__main__':
     main()
