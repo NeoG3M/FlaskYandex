@@ -12,9 +12,10 @@ def main():
     global_init(input())
     session = create_session()
 
-    users = session.query(User).filter(User.address == 'module_1')
+    users = session.query(User).filter(User.address == 'module_1', User.speciality.notlike('%engineer%'),
+                                       User.position.notlike('%engineer%'))
     for us in users:
-        print(us)
+        print(us.id)
 
     # app.run()
 
