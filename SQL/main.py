@@ -6,8 +6,8 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 
 def main():
-    db_session.global_init('')
-    app.run()
+    db_session.global_init('db/mars.db')
+    # app.run()
 
 
 
