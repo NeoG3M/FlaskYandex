@@ -15,14 +15,14 @@ def main():
     def create_user(*args):
         args = list(args)
         user = User()
-        user.surname = args.pop()
-        user.name = args.pop()
-        user.age = args.pop()
-        user.position = args.pop()
-        user.speciality = args.pop()
-        user.address = args.pop()
-        user.email = args.pop()
-        user.hashed_password = args.pop()
+        user.surname = args.pop(0)
+        user.name = args.pop(0)
+        user.age = args.pop(0)
+        user.position = args.pop(0)
+        user.speciality = args.pop(0)
+        user.address = args.pop(0)
+        user.email = args.pop(0)
+        user.hashed_password = args.pop(0)
         user.set_password(user.hashed_password)
         return user
 
