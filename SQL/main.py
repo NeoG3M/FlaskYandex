@@ -2,67 +2,19 @@ from flask import Flask
 
 from data.users import User
 from data import db_session
+from data.db_session import create_session, global_init
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 
 def main():
-    db_session.global_init('db/mars.db')
+    global_init(input())
+    session = create_session()
 
-    session = db_session.create_session()
-
-    def create_user(*args):
-        args = list(args)
-        user = User()
-        user.surname = args.pop(0)
-        user.name = args.pop(0)
-        user.age = args.pop(0)
-        user.position = args.pop(0)
-        user.speciality = args.pop(0)
-        user.address = args.pop(0)
-        user.email = args.pop(0)
-        user.hashed_password = args.pop(0)
-        user.set_password(user.hashed_password)
-        return user
-
-    user = create_user("Scott",
-                       "Ridley",
-                       21,
-                       "captain",
-                       "research engineer",
-                       "module_1",
-                       "scott_chief@mars.org",
-                       "cap")
-    session.add(user)
-    user = create_user("Lebron",
-                       "James",
-                       44,
-                       "just a man",
-                       "research engineer",
-                       "module_2",
-                       "lebron@mars.org",
-                       "duuude")
-    session.add(user)
-    user = create_user("Britney",
-                       "Spirs",
-                       55,
-                       "crew member",
-                       "singerr",
-                       "module_3",
-                       "onlygirlintheworld@mars.org",
-                       "mymaaan")
-    session.add(user)
-    user = create_user("Donald",
-                       "Trump",
-                       72,
-                       "ex captain",
-                       "builder",
-                       "module_6",
-                       "makecountrygreatAGAIN@mars.org",
-                       "imagod")
-    session.add(user)
-    session.commit()
+    users = session.query(User).filter(User.address == 'module_1')
+    for us in users:
+        print(us)
 
     # app.run()
 
