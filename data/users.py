@@ -2,12 +2,12 @@ import datetime
 
 import sqlalchemy
 from sqlalchemy import orm
-
+from flask_login import UserMixin
 from .db_session import SqlAlchemyBase
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class User(SqlAlchemyBase):
+class User(SqlAlchemyBase, UserMixin):
     __tablename__ = 'users'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
@@ -21,7 +21,7 @@ class User(SqlAlchemyBase):
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
     modified_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now())
 
-    jobs = orm.relationship('Jobs', back_populates='user')
+    jobs = orm.relationship('Job', back_populates='user')
 
     def __repr__(self):
         return f'<Colonist> {self.id} {self.surname} {self.name}'
