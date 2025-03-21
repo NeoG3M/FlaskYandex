@@ -7,6 +7,7 @@ from .db_session import SqlAlchemyBase
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
+
 class User(SqlAlchemyBase, UserMixin):
     __tablename__ = 'users'
 
@@ -31,3 +32,18 @@ class User(SqlAlchemyBase, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
+
+
+def create_user(*args):
+    args = list(args)
+    user = User()
+    user.surname = args.pop(0)
+    user.name = args.pop(0)
+    user.age = args.pop(0)
+    user.position = args.pop(0)
+    user.speciality = args.pop(0)
+    user.address = args.pop(0)
+    user.email = args.pop(0)
+    user.hashed_password = args.pop(0)
+    user.set_password(user.hashed_password)
+    return user

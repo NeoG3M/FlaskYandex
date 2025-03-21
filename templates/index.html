@@ -1,4 +1,32 @@
 {%extends "base.html"%}
 
 {% block content %}
+<div class="container m-auto w-50">
+    <h2 class="text-center">Журнал работ</h2>
+    {% for job in jobs %}
+    <h3>Работа # {{loop.index}}</h3>
+    <table class="w-100 ml-3 allign-middle table">
+        <thead>
+        <tr class="table-secondary">
+            <th class="table-secondary">Название работы</th>
+            <th class="table-secondary">Тим лидер</th>
+            <th class="table-secondary">Продолжительность</th>
+            <th class="table-secondary">Список коллабораторов</th>
+            <th class="table-secondary">Завершена</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-primary">
+            <td class="table-primary text-center">{{job["job_title"]}}</td>
+            <td class="table-primary text-center">{{job["team_leader"]}}</td>
+            <td class="table-primary text-center">{{job["duration"]}}</td>
+            <td class="table-primary text-center">{{job["collaborators"]}}</td>
+            <td class="{%if job.is_finished%}table-success{%else%}table-danger{%endif%} text-center">{%if
+                job["is_finished"]%}Завершена{%else%}Не завершена{%endif%}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    {% endfor %}
+</div>
 {% endblock %}
