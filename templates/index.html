@@ -3,6 +3,11 @@
 {% block content %}
 <div class="container m-auto w-50">
     <h2 class="text-center">Журнал работ</h2>
+    {% if current_user.is_authenticated %}
+    <a href="/addjob">
+        <button type="button" class="btn btn-secondary">Добавить работу</button>
+    </a>
+    {% endif %}
     {% for job in jobs %}
     <h3>Работа # {{loop.index}}</h3>
     <table class="w-100 ml-3 allign-middle table">
@@ -27,6 +32,14 @@
         </tr>
         </tbody>
     </table>
+    {%if current_user.is_authenticated%}
+    <a href="/editjob/{{job['id']}}">
+        <button type="button" class="btn btn-warning">Изменить работу</button>
+    </a>
+    <a href="/deletejob/{{job['id']}}">
+        <button type="button" class="btn btn-danger">Удалить работу</button>
+    </a>
+    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}

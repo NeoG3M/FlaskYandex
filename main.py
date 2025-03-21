@@ -1,7 +1,7 @@
-from flask import Flask, redirect
+from flask import Flask, redirect, request, abort
 from flask import render_template
 
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 from login_form import LoginForm
 from registr_form import RegistrForm
@@ -18,7 +18,6 @@ login_manager.init_app(app)
 
 
 @app.route('/')
-@login_required
 def index():
     db_sess = db_session.create_session()
     jobs = db_sess.query(Job).all()
@@ -27,8 +26,9 @@ def index():
         team_leader = db_sess.query(User).get(job.team_leader)
         surname = team_leader.surname
         name = team_leader.name
-        out_jobs.append({'job_title': job.job, 'team_leader': f'{surname} {name}', 'duration': job.work_size,
-                         'collaborators': job.collaborators, 'is_finished': job.is_finished})
+        out_jobs.append(
+            {'id': job.id, 'job_title': job.job, 'team_leader': f'{surname} {name}', 'duration': job.work_size,
+             'collaborators': job.collaborators, 'is_finished': job.is_finished})
 
     return render_template('index.html', jobs=out_jobs)
 
@@ -79,6 +79,51 @@ def add_job():
         session.commit()
         return redirect("/")
     return render_template('addjob.html', title='Добавление работы', form=form)
+
+
+@login_required
+@app.route('/editjob/<int:job_id>', methods=['GET', 'POST'])
+def edit_job(job_id):
+    form = AddJobForm()
+    session = db_session.create_session()
+    if request.method == 'GET':
+        editing_job = session.get(Job, job_id)
+        if current_user.id != editing_job.team_leader and current_user.id != 1:
+            return render_template('fail.html', message="Ваши права не позволяют редактировать эту работу!")
+
+        form.team_leader.data = editing_job.team_leader
+        form.job_title.data = editing_job.job
+        form.work_size.data = editing_job.work_size
+        form.collaborators.data = editing_job.collaborators
+        form.is_finished.data = editing_job.is_finished
+    if form.validate_on_submit():
+        job = session.get(Job, job_id)
+        if job:
+            job.team_leader = form.team_leader.data
+            job.job = form.job_title.data
+            job.work_size = form.work_size.data
+            job.collaborators = form.collaborators.data
+            job.is_finished = form.is_finished.data
+            session.commit()
+            return redirect("/")
+        else:
+            abort(404)
+    return render_template('addjob.html', title='Изменение работы', form=form)
+
+
+@login_required
+@app.route('/deletejob/<int:job_id>', methods=['GET', 'POST'])
+def delete_job(job_id):
+    session = db_session.create_session()
+    job = session.get(Job, job_id)
+    if current_user.id != job.team_leader and current_user.id != 1:
+        return render_template('fail.html', message="Ваши права не позволяют удалять эту работу!")
+    if job:
+        session.delete(job)
+        session.commit()
+    else:
+        abort(404)
+    return redirect("/")
 
 
 @app.route('/<title>')
