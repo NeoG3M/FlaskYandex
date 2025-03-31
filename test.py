@@ -1,9 +1,26 @@
-from requests import post
+from requests import post, get, delete
 
-print(post('http://localhost:8080/api/jobs',
-           json={'team_leader': 1, 'job': 'very smart job', 'work_size': 23, 'is_finished': False,
-                 'collaborators': '2, 3'}).json())
+print(get('http://localhost:8080/api/v2/users').json())
+print(get('http://localhost:8080/api/v2/users/1000').json())
 
-print(post('http://localhost:8080/api/jobs', json={'team_leader': 1, 'work_size': 30}).json())
-print(post('http://localhost:8080/api/jobs', json={"id": 3}).json())
-print(post('http://localhost:8080/api/jobs', json={}).json())
+resp = post('http://localhost:8080/api/v2/users', json={"surname": "Попкин",
+                                                        "name": "Иван",
+                                                        "age": 14,
+                                                        "position": "Помошник",
+                                                        "speciality": "Сталелитейник",
+                                                        "address": "Земля, дом Василия",
+                                                        "email": "kidEmail@pupkin.ru",
+                                                        "password": "iirjhhdd[d##"})
+new_id = resp.json()['id']
+print(resp.json())
+print(get(f'http://localhost:8080/api/v2/users/{new_id}').json())
+print(delete(f'http://localhost:8080/api/v2/users/{new_id}').json())
+
+print(post('http://localhost:8080/api/v2/users', json={"surname": "Попкин",
+                                                       "name": "Иван",
+                                                       "age": 14,
+                                                       "position": "Помошник",
+                                                       "speciality": "Сталелитейник"
+                                                       }).json())
+
+print(delete(f'http://localhost:8080/api/v2/users/1000').json())
