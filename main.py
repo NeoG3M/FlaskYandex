@@ -1,20 +1,37 @@
 from flask import Flask, redirect, request, abort
-from flask import render_template
-
+from flask import render_template, make_response, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_restful import Api
 
-from login_form import LoginForm
-from registr_form import RegistrForm
+from API.jobs_api import jobs_bp
 from addjob_form import AddJobForm
 from data import db_session
 from data.jobs import create_job, Job
 from data.users import User, create_user
+from login_form import LoginForm
+from registr_form import RegistrForm
+from API_v2.users_api import UsersListResource, UserResource
 
 app = Flask(__name__)
+api = Api(app)
+app.register_blueprint(jobs_bp, url_prefix='/api')
 app.config['SECRET_KEY'] = 'super_dooper_secret_key'
+
+api.add_resource(UsersListResource, '/api/v2/users')
+api.add_resource(UserResource, '/api/v2/users/<int:user_id>')
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
+
+@app.errorhandler(400)
+def bad_request(_):
+    return make_response(jsonify({'error': 'Bad Request'}), 400)
 
 
 @app.route('/')
